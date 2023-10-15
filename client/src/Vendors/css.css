@@ -1,0 +1,90 @@
+.table {
+    margin: 0 auto;
+}
+
+.delete-modal {
+    width: 50%;
+    height: 10rem;
+    background: grey;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.5rem;
+    position: absolute;
+    top: 25%;
+    left: 25%
+}
+
+.data {
+    border: 1px solid black;
+}
+
+.data tr td {
+    border: 1px solid black;
+}
+
+.edit-modal {
+    width: 70%;
+    height: 2rem;
+    background: grey;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.5rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    justify-content: space-around;
+}
+
+.form {
+    background-color: yellow;
+    width: 100%;
+}
+
+.primary {
+    background-color: blue;
+    color: white;
+    height: 2rem;
+    width: 4rem;
+}
+
+.danger {
+    background-color: red;
+    color: white;
+    height: 2rem;
+    width: 4rem;
+}
+
+.btn {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.btn2 {
+    width: 50%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.pagination ul li {
+    list-style: none;
+
+}
+
+.pagination ul {
+    display: flex;
+    flex-direction: row;
+}
+
+.pagination button {
+    background-color: blue;
+    color: white;
+
+}
