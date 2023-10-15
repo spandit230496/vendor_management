@@ -1,6 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import css from './css.css'
+import {
+    AppBar,
+    Toolbar,
+    Typography,
+    Button,
+    IconButton,
+    Menu,
+    MenuItem,
+    Grid,
+    Paper,
+    Table,
+    TableHead,
+    TableBody,
+    TableRow,
+    TableCell,
+    TableContainer,
+    TablePagination,
+} from '@mui/material';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -13,23 +30,21 @@ function VendorList() {
     const [itemToDelete, setItemToDelete] = useState(null);
     const [showEditForm, setShowEditForm] = useState(false);
     const [selectedVendor, setSelectedVendor] = useState(null);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage] = useState(10)
-
+    const [currentPage, setCurrentPage] = useState(0);
+    const [itemsPerPage, setItemsPerPage] = useState(10);
 
     const showVendor = async () => {
         try {
             const response = await axios.get('http://localhost:5000/api/vendor/get-vendors');
             const respdata = response.data;
             setData(respdata);
-            console.log(respdata)
+            console.log(respdata);
         } catch (e) {
             console.log(e);
         }
     };
 
     const handleDelete = (id) => {
-
         setItemToDelete(id);
         setShowDeleteModal(true);
     };
@@ -53,7 +68,6 @@ function VendorList() {
     };
 
     const handleEdit = (vendor) => {
-
         setShowEditForm(true);
         setSelectedVendor(vendor);
     };
@@ -63,40 +77,49 @@ function VendorList() {
             .then(() => {
                 const updatedData = data.map((vendor) => (vendor._id === editedVendor._id ? editedVendor : vendor));
                 setData(updatedData);
-                toast("data updated successfully")
+                toast("data updated successfully");
 
                 setShowEditForm(false);
             })
             .catch((error) => {
-
                 console.log(error);
             });
-    };
-
-    const cancelEdit = () => {
-        setShowEditForm(false);
     };
 
     useEffect(() => {
         showVendor();
     }, []);
 
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentData = data.slice(indexOfFirstItem, indexOfLastItem);
+    const handleChangePage = (event, newPage) => {
+        setCurrentPage(newPage);
+    };
 
-    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+    const handleChangeItemsPerPage = (event) => {
+        setItemsPerPage(parseInt(event.target.value, 10));
+        setCurrentPage(0);
+    };
+
+    const startIndex = currentPage * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const currentData = data.slice(startIndex, endIndex);
 
     return (
         <div>
-            <h1>Vendor List</h1> <span>Total Number of Vendors is {data.length}</span>
+            <AppBar position="static">
+                <Toolbar>
+                    <Typography variant="h6" sx={{ flexGrow: 1 }}>
+                        Vendor List
+                    </Typography>
+                    <span>Total Number of Vendors is {data.length}</span>
+                </Toolbar>
+            </AppBar>
             {showDeleteModal && (
                 <div className="delete-modal">
                     <div>
                         <p>Are you sure you want to delete this vendor?</p>
-                        <div className='btn'>
-                            <button onClick={confirmDelete} className='primary'>Yes</button>
-                            <button onClick={cancelDelete} className='danger'>No</button>
+                        <div className="btn">
+                            <Button onClick={confirmDelete} variant="contained" color="primary">Yes</Button>
+                            <Button onClick={cancelDelete} variant="contained" color="secondary">No</Button>
                         </div>
                     </div>
                 </div>
@@ -105,54 +128,49 @@ function VendorList() {
                 <EditForm
                     vendor={selectedVendor}
                     onSave={saveEditedVendor}
-                    onCancel={cancelEdit}
+                    onCancel={() => setShowEditForm(false)}
                 />
             )}
             <ToastContainer />
-            <div style={{ width: '50%', overflowX: 'auto' }} className='table'>
-                <div style={{ overflowX: 'auto' }}>
-
-                    <table className='data' style={{ width: '100%', tableLayout: 'fixed', height: "20px", borderCollapse: 'collapse' }}>
-                        <thead>
-                            <tr>
-                                <th>Vendor Name</th>
-                                <th>Bank Account</th>
-                                <th>Bank Name</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody style={{ textAlign: 'center', }}>
-                            {currentData.map((vendor, index) => (
-                                <tr key={index}>
-                                    <td>{vendor.vendorname}</td>
-                                    <td>{vendor.bankaccount}</td>
-                                    <td>{vendor.bankname}</td>
-                                    <td>
-                                        <EditIcon onClick={() => handleEdit(vendor)} />
-                                        <DeleteIcon onClick={() => handleDelete(vendor._id)} style={{ color: "red" }} />
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-
-
-
-                    <div className="pagination">
-                        <ul>
-                            {Array.from({ length: Math.ceil(data.length / itemsPerPage) }).map((_, index) => (
-                                <li key={index}>
-                                    <button onClick={() => paginate(index + 1)}>{index + 1}</button>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                </div>
-
-            </div>
-
-
-
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <Paper>
+                        <TableContainer>
+                            <Table>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>Vendor Name</TableCell>
+                                        <TableCell>Bank Account</TableCell>
+                                        <TableCell>Bank Name</TableCell>
+                                        <TableCell>Actions</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {currentData.map((vendor, index) => (
+                                        <TableRow key={index}>
+                                            <TableCell>{vendor.vendorname}</TableCell>
+                                            <TableCell>{vendor.bankaccount}</TableCell>
+                                            <TableCell>{vendor.bankname}</TableCell>
+                                            <TableCell>
+                                                <EditIcon onClick={() => handleEdit(vendor)} />
+                                                <DeleteIcon onClick={() => handleDelete(vendor._id)} style={{ color: "red" }} />
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </Paper>
+                </Grid>
+            </Grid>
+            <TablePagination
+                component="div"
+                count={data.length}
+                page={currentPage}
+                onPageChange={handleChangePage}
+                rowsPerPage={itemsPerPage}
+                onRowsPerPageChange={handleChangeItemsPerPage}
+            />
         </div>
     );
 }
