@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import css from '../Vendors/css.css'
+import { TextField, Button, Grid, Box } from '@mui/material';
 import { ToastContainer, toast } from 'react-toastify';
 
-function EditForm({ vendor, onSave, onCancel }) {
+const EditForm = ({ vendor, onSave, onCancel }) => {
     const [editedVendor, setEditedVendor] = useState({ ...vendor });
 
     const handleInputChange = (e) => {
@@ -12,43 +12,49 @@ function EditForm({ vendor, onSave, onCancel }) {
 
     const handleSave = () => {
         onSave(editedVendor);
-
     };
 
     return (
-        <div className='edit-modal'>
+        <Grid container spacing={2} style={{ marginTop: '20px' }}>
             <ToastContainer />
-            <form className='from'>
-                <label>Vendor Name:</label>
-                <input
-                    type="text"
-                    name="vendorname"
-                    value={editedVendor.vendorname}
-                    onChange={handleInputChange}
-                />
-
-                <label>Bank Account:</label>
-                <input
-                    type="text"
-                    name="bankaccount"
-                    value={editedVendor.bankaccount}
-                    onChange={handleInputChange}
-                />
-
-                <label>Bank Name:</label>
-                <input
-                    type="text"
-                    name="bankname"
-                    value={editedVendor.bankname}
-                    onChange={handleInputChange}
-                />
-                <div className='btn2'>
-                    <button onClick={handleSave} className='primary'>Save</button>
-                    <button onClick={onCancel} className='danger'>Cancel</button>
-                </div>
-            </form>
-        </div>
+            <Grid item xs={12}>
+                <form className="form">
+                    <TextField
+                        fullWidth
+                        label="Vendor Name"
+                        name="vendorname"
+                        value={editedVendor.vendorname}
+                        onChange={handleInputChange}
+                        style={{ marginBottom: '10px' }} // Add margin bottom
+                    />
+                    <TextField
+                        fullWidth
+                        label="Bank Account"
+                        name="bankaccount"
+                        value={editedVendor.bankaccount}
+                        onChange={handleInputChange}
+                        style={{ marginBottom: '10px' }} // Add margin bottom
+                    />
+                    <TextField
+                        fullWidth
+                        label="Bank Name"
+                        name="bankname"
+                        value={editedVendor.bankname}
+                        onChange={handleInputChange}
+                        style={{ marginBottom: '10px' }} // Add margin bottom
+                    />
+                    <Box mt={2} display="flex" justifyContent="space-between">
+                        <Button variant="contained" color="primary" onClick={handleSave}>
+                            Save
+                        </Button>
+                        <Button variant="contained" color="secondary" onClick={onCancel}>
+                            Cancel
+                        </Button>
+                    </Box>
+                </form>
+            </Grid>
+        </Grid>
     );
-}
+};
 
 export default EditForm;

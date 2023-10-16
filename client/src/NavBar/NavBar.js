@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Navbar, Nav, Button } from 'react-bootstrap';
 import nav from './nav.css'
@@ -12,13 +12,11 @@ const NavBar = () => {
         navigate('/login');
     };
 
-    useEffect(() => { }, [sessionStorage.getItem('authenticatedUser')])
-
     return (
         <Navbar bg="dark" expand="lg" >
             <Navbar.Brand href="#home" style={{ color: 'white' }}>VENDOR MANAGEMENT</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav" color='dark' bg="light" >
+            {user ? <Navbar.Collapse id="basic-navbar-nav" color='dark' bg="light" >
                 <Nav className="ms-auto">
                     <Nav.Link as={NavLink} to="/vendor" style={{ color: 'white' }}>
                         Vendor
@@ -26,15 +24,15 @@ const NavBar = () => {
                     <Nav.Link as={NavLink} to="/createvendor" style={{ color: 'white' }}>
                         Create Vendor
                     </Nav.Link>
-                    {user ? (
-                        <Button variant="primary" onClick={handleLogout}>
-                            Log Out
-                        </Button>
-                    ) : (
-                        ''
-                    )}
+
+                    <Button variant="primary" onClick={handleLogout}>
+                        Log Out
+                    </Button>
+
+
                 </Nav>
-            </Navbar.Collapse>
+            </Navbar.Collapse> : ""}
+
         </Navbar>
     );
 };
