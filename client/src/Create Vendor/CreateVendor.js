@@ -36,7 +36,7 @@ export default function CreatedVendor() {
         console.log(vendorData)
 
         try {
-            const response = await axios.post('http://localhost:5000/api/vendor/register', vendorData);
+            const response = await axios.post('https://vendor-uq4e.onrender.com/api/vendor/register', vendorData);
             toast.success("vendor created successfully")
 
 

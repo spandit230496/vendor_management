@@ -40,7 +40,7 @@ function VendorList() {
 
     const showVendor = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/api/vendor/get-vendors');
+            const response = await axios.get('https://vendor-uq4e.onrender.com/api/vendor/get-vendors');
             const respdata = response.data;
             setData(respdata);
             console.log(respdata);
@@ -57,7 +57,7 @@ function VendorList() {
 
     const confirmDelete = async () => {
         try {
-            await axios.delete(`http://localhost:5000/api/vendor/delete-vendor/${itemToDelete}`);
+            await axios.delete(`https://vendor-uq4e.onrender.com/api/vendor/delete-vendor/${itemToDelete}`);
             toast.success("Vendor deleted successfully");
             setData(data.filter((vendor) => vendor._id !== itemToDelete));
         } catch (e) {
@@ -79,7 +79,7 @@ function VendorList() {
     };
 
     const saveEditedVendor = (editedVendor) => {
-        axios.post(`http://localhost:5000/api/vendor/edit/${editedVendor._id}`, editedVendor)
+        axios.post(`https://vendor-uq4e.onrender.com/api/vendor/edit/${editedVendor._id}`, editedVendor)
             .then(() => {
                 const updatedData = data.map((vendor) => (vendor._id === editedVendor._id ? editedVendor : vendor));
                 setData(updatedData);
